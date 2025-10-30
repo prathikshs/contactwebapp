@@ -1,0 +1,16 @@
+---
+- name: Deploy application to Kubernetes
+  hosts: localhost
+  connection: local
+  tasks:
+    - name: Deploy the app to AKS
+      command: kubectl apply -f kubernetes/deployment.yaml
+      register: deploy_result
+      failed_when: deploy_result.rc != 0
+      ignore_errors: no
+
+    - name: Expose the app service
+      command: kubectl apply -f kubernetes/service.yaml
+      register: service_result
+      failed_when: service_result.rc != 0
+      ignore_errors: no
